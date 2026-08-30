@@ -28,4 +28,15 @@ jobs:
           pip install pytest
 
       - name: Run offline unit tests
-        run: pytest -q tests/test_data_cleaner.py --tb=short
+        shell: bash
+        run: |
+          set +e
+          pytest -vv tests/test_data_cleaner.py --tb=long 2>&1 | tee pytest-output.txt
+          test_status=${PIPESTATUS[0]}
+          {
+            echo '## Pytest output'
+            echo '```text'
+            cat pytest-output.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit "$test_status"
