@@ -41,7 +41,7 @@ The application was benchmarked against typical manual reporting workflows using
 ## Architecture & Technical Deep-Dive
 
 ```mermaid
-flowchart TD
+flowchart LR
     A["User Query"] --> B("Streamlit App")
     B --> C{"Board Cache Exists?"}
     C -- No --> D["MondayClient (GraphQL)"]
