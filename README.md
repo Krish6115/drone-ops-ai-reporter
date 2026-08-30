@@ -42,17 +42,17 @@ The application was benchmarked against typical manual reporting workflows using
 
 ```mermaid
 flowchart TD
-    A[User Query] --> B(Streamlit App)
-    B --> C{Board Cache Exists?}
-    C -- No --> D[MondayClient (GraphQL)]
-    D --> E[data_cleaner.py]
-    E --> F[Data Quality Report]
-    C -- Yes --> G[BIAnalyst (LangChain)]
+    A["User Query"] --> B("Streamlit App")
+    B --> C{"Board Cache Exists?"}
+    C -- No --> D["MondayClient (GraphQL)"]
+    D --> E["data_cleaner.py"]
+    E --> F["Data Quality Report"]
+    C -- Yes --> G["BIAnalyst (LangChain)"]
     F --> G
     E --> G
-    G --> H[Pandas DataFrame Agent]
-    H --> I[GPT-4o Analysis]
-    I --> J[Grounded Response + Caveats]
+    G --> H["Pandas DataFrame Agent"]
+    H --> I["GPT-4o Analysis"]
+    I --> J["Grounded Response + Caveats"]
 ```
 
 Our architecture follows a strict pipeline: **EXTRACT → CLEANSE → DIAGNOSE → ANALYZE → AUDIT**.
