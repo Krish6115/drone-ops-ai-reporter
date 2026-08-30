@@ -6,7 +6,7 @@ from typing import Optional
 
 import pandas as pd
 from langchain_experimental.agents import create_pandas_dataframe_agent
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 
 
 BASE_PROMPT = """You are the Chief of Staff and Lead BI Analyst for a commercial drone analytics company serving the mining and solar sectors.
@@ -25,17 +25,17 @@ class BIAnalyst:
         self,
         deals: pd.DataFrame,
         work_orders: pd.DataFrame,
-        openai_api_key: str,
+        groq_api_key: str,
         quality_report: str,
     ) -> None:
-        if not openai_api_key or not openai_api_key.strip():
-            raise ValueError("An OpenAI API key is required.")
+        if not groq_api_key or not groq_api_key.strip():
+            raise ValueError("A Groq API key is required.")
         self.deals = deals
         self.work_orders = work_orders
-        llm = ChatOpenAI(
-            model="gpt-4o",
+        llm = ChatGroq(
+            model="llama-3.3-70b-versatile",
             temperature=0.2,
-            api_key=openai_api_key.strip(),
+            api_key=groq_api_key.strip(),
         )
         self.executor = create_pandas_dataframe_agent(
             llm,

@@ -36,8 +36,8 @@ with st.sidebar:
     monday_token = st.text_input(
         "Monday.com API token", value=_setting("MONDAY_API_TOKEN"), type="password"
     )
-    openai_key = st.text_input(
-        "OpenAI API key", value=_setting("OPENAI_API_KEY"), type="password"
+    groq_key = st.text_input(
+        "Groq API key (Free Llama 3)", value=_setting("GROQ_API_KEY"), type="password"
     )
     deals_board_id = st.text_input("Deals board ID", value=_setting("MONDAY_DEALS_BOARD_ID"))
     work_orders_board_id = st.text_input(
@@ -48,10 +48,10 @@ with st.sidebar:
 
 
 def load_data() -> None:
-    if not all((monday_token, openai_key, deals_board_id, work_orders_board_id)):
+    if not all((monday_token, groq_key, deals_board_id, work_orders_board_id)):
         st.error("Enter both credentials and both numeric board IDs before loading data.")
         return
-    signature = (monday_token, openai_key, deals_board_id, work_orders_board_id)
+    signature = (monday_token, groq_key, deals_board_id, work_orders_board_id)
     if st.session_state.config_signature == signature and st.session_state.analyst:
         return
     try:
@@ -62,7 +62,7 @@ def load_data() -> None:
         st.session_state.deals = deals
         st.session_state.work_orders = work_orders
         st.session_state.quality_report = quality
-        st.session_state.analyst = BIAnalyst(deals, work_orders, openai_key, quality)
+        st.session_state.analyst = BIAnalyst(deals, work_orders, groq_key, quality)
         st.session_state.config_signature = signature
         st.success("Boards loaded and cleaned. Subsequent questions use the cached session data.")
     except (MondayAPIError, ValueError) as exc:

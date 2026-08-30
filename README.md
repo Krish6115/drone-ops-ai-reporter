@@ -56,6 +56,7 @@ flowchart LR
 ```
 
 Our architecture follows a strict pipeline: **EXTRACT → CLEANSE → DIAGNOSE → ANALYZE → AUDIT**.
+Environment variables are also supported: `MONDAY_API_TOKEN`, `GROQ_API_KEY`, `MONDAY_DEALS_BOARD_ID`, and `MONDAY_WORK_ORDERS_BOARD_ID`.
 1. **EXTRACT**: `monday_client.py` uses GraphQL to pull items safely.
 2. **CLEANSE**: `data_cleaner.py` normalizes sectors, statuses, and currencies.
 3. **DIAGNOSE**: We generate a missing-cell report.
@@ -85,7 +86,7 @@ streamlit run app.py
 
 **What you get instantly:**
 - A clean, intuitive chat interface hosted locally on `localhost:8501`.
-- Sidebar configuration for Monday.com and OpenAI API keys.
+- Sidebar configuration for Monday.com and Groq API keys.
 - A **Generate Leadership Update** quick-action button for a 3-paragraph macro-report.
 - The ability to ask cross-board questions without needing any pre-seeded local data.
 
@@ -103,7 +104,7 @@ We built this agent to survive the real world. We tested it against:
 
 ## Query Latency & Reliability, measured
 
-The agent's speed is primarily bound by OpenAI's API response times and Monday.com's GraphQL limits. We prioritize accuracy over raw speed, enforcing a `0.2` temperature constraint.
+The agent's speed is primarily bound by Groq's API response times and Monday.com's GraphQL limits. We prioritize accuracy over raw speed, enforcing a `0.2` temperature constraint.
 
 | Metric | Value |
 |---|---|
@@ -167,11 +168,13 @@ drone-ops-ai-reporter/
 <details>
 <summary>Running the Live App</summary>
 
-**Prerequisites:** You need a Monday.com API Token and an OpenAI API Key.
+**Prerequisites:** MONDAY_API_TOKEN = "your-monday-token"
+GROQ_API_KEY = "your-groq-key"
+MONDAY_DEALS_BOARD_ID = "123456789"
 ```bash
 streamlit run app.py
 ```
-*Expected behavior: The Streamlit interface opens in your browser. You input your credentials and Board IDs in the sidebar to begin chatting.*
+*Expected behavior: The Streamlit interface opens in your browser. Enter a Monday API token, Groq API key, Deals board ID, and Work Orders board ID in the sidebar to begin chatting.*
 </details>
 
 <details>
