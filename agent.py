@@ -33,7 +33,7 @@ class BIAnalyst:
         self.deals = deals
         self.work_orders = work_orders
         llm = ChatGroq(
-            model="llama-3.1-70b-versatile",
+            model="llama3-70b-8192",
             temperature=0.2,
             api_key=groq_api_key.strip(),
         )
