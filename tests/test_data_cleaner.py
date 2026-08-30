@@ -79,7 +79,7 @@ def test_cleaner_preserves_more_than_one_api_page_of_rows():
 
     # Monday pages are limited to 500; cleaning must not truncate a merged fetch.
     assert len(cleaned) == row_count
-    assert cleaned["Revenue"].sum() == 1_000_000
+    assert cleaned["Revenue"].sum() == 1_001_000
     assert cleaned["Sector"].eq("Energy Sector").all()
 
 

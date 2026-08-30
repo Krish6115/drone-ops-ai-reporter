@@ -14,7 +14,9 @@ def _key(value: object) -> str:
 
 
 def _quality(df: pd.DataFrame, label: str) -> Dict[str, object]:
-    missing = df.isna() | df.astype(object).applymap(
+    df_obj = df.astype(object)
+    mapper = getattr(df_obj, "map", None) or getattr(df_obj, "applymap")
+    missing = df.isna() | mapper(
         lambda value: isinstance(value, str) and not value.strip()
     )
     by_column = missing.sum().astype(int).to_dict()
