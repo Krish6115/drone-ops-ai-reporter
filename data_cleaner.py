@@ -55,8 +55,9 @@ def _normalise_canonical_columns(df: pd.DataFrame) -> None:
                 df[target] = df[matches[0]]
 
 
-def _attach_quality(df: pd.DataFrame, label: str) -> pd.DataFrame:
-    report = _quality(df, label)
+def _attach_quality(df: pd.DataFrame, label: str, report: Dict[str, object] = None) -> pd.DataFrame:
+    if report is None:
+        report = _quality(df, label)
     df.attrs["data_quality"] = report
     for column, count in report["missing_by_column"].items():
         df.attrs[f"missing_{_key(column).replace(' ', '_')}"] = count
@@ -65,6 +66,7 @@ def _attach_quality(df: pd.DataFrame, label: str) -> pd.DataFrame:
 
 def clean_deals_data(df: pd.DataFrame) -> pd.DataFrame:
     """Clean pipeline data while preserving source columns and quality metadata."""
+    report = _quality(df, "Deals")
     cleaned = df.copy()
     cleaned.columns = [str(column).strip() for column in cleaned.columns]
     cleaned = cleaned.replace({"": np.nan, "-": np.nan, "n/a": np.nan, "na": np.nan})
@@ -92,11 +94,12 @@ def clean_deals_data(df: pd.DataFrame) -> pd.DataFrame:
         cleaned[column] = cleaned[column].astype("string").str.strip().str.replace(
             r"\s+", " ", regex=True
         ).str.title()
-    return _attach_quality(cleaned, "Deals")
+    return _attach_quality(cleaned, "Deals", report)
 
 
 def clean_work_orders_data(df: pd.DataFrame) -> pd.DataFrame:
     """Clean operational data and normalize common status variants."""
+    report = _quality(df, "Work Orders")
     cleaned = df.copy()
     cleaned.columns = [str(column).strip() for column in cleaned.columns]
     cleaned = cleaned.replace({"": np.nan, "-": np.nan, "n/a": np.nan, "na": np.nan})
@@ -115,7 +118,7 @@ def clean_work_orders_data(df: pd.DataFrame) -> pd.DataFrame:
             if pd.notna(value) and any(word in value for word in ("cancel", "void"))
             else value.title() if pd.notna(value) else np.nan
         )
-    return _attach_quality(cleaned, "Work Orders")
+    return _attach_quality(cleaned, "Work Orders", report)
 
 
 def generate_data_quality_report(df1: pd.DataFrame, df2: pd.DataFrame) -> str:
