@@ -116,18 +116,6 @@ The agent's speed is primarily bound by Groq's API response times and Monday.com
 
 *Tested on standard consumer hardware on a standard broadband connection. Times may vary based on API network conditions.*
 
-## Where we deliberately did NOT use MCP (Yet)
-
-While the Model Context Protocol (MCP) is a powerful emerging standard, we intentionally opted for **direct GraphQL (v2) integration via `requests`**.
-
-<div align="center">
-  <img src="docs/assets/llm_boundary.png" width="100%" alt="API Boundary Diagram showing GraphQL vs MCP">
-</div>
-
-**Why?**
-- **Timebox Constraints:** Setting up an MCP server, auth model, and connector lifecycle introduces unnecessary risk for a 6-hour delivery window.
-- **Predictability:** GraphQL provides immediate access to cursor pagination and clear read-only boundaries.
-
 <details>
 <summary>Fallback Mechanisms</summary>
 
