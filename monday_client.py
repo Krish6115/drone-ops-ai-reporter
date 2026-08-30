@@ -97,7 +97,7 @@ class MondayClient:
               items {
                 id
                 name
-                column_values { id type title text }
+                column_values { id type text column { title } }
               }
             }
           }
@@ -110,7 +110,7 @@ class MondayClient:
             items {
               id
               name
-              column_values { id type title text }
+              column_values { id type text column { title } }
             }
           }
         }
@@ -144,7 +144,8 @@ class MondayClient:
         for item in items:
             row: Dict[str, Any] = {"Item ID": item.get("id"), "Item Name": item.get("name")}
             for column in item.get("column_values", []):
-                title = column.get("title") or column.get("id") or "Unknown Column"
+                col_info = column.get("column") or {}
+                title = col_info.get("title") or column.get("title") or column.get("id") or "Unknown Column"
                 row[title] = column.get("text")
             rows.append(row)
         return pd.DataFrame(rows)
